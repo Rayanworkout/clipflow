@@ -28,10 +28,15 @@ impl ClipboardDaemon {
     }
 
     pub fn monitor_clipboard_events(&mut self) -> Result<()> {
+        let mut last_entry = ClipboardEntry::Text(String::from(""));
+
         loop {
             match self.read_clipboard_entry() {
                 Ok(Some(entry)) => {
-                    println!("New clipboard entry: {:?}", entry);
+                    if entry != last_entry {
+                        println!("New clipboard entry: {:?}", entry);
+                        last_entry = entry;
+                    }
                 }
                 Ok(None) => {}
                 Err(error) => {

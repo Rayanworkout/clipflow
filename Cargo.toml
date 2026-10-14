@@ -1,0 +1,11 @@
+[package]
+name = "clipflow"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+arboard = "3.6.1"
+anyhow = "1.0.104"
+serde = { version = "1", features = ["derive"] }
+tracing = "0.1.41"
+tracing-subscriber = "0.3.19"

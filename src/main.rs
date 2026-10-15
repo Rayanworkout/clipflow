@@ -1,4 +1,5 @@
 mod daemon;
+mod classifier;
 
 use anyhow::Result;
 use daemon::ClipboardDaemon;

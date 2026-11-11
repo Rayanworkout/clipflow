@@ -1,5 +1,5 @@
 [global]
-enabled = true
+enabled = false
 
 [plugins]
 url = "open_url"

@@ -14,11 +14,13 @@ fn main() -> Result<()> {
     // Init the config file
     let config = Config::load("config.toml")?;
 
-    println!("{:?}", config);
+    if config.global.enabled {
+        tracing::info!("Clipflow listening for clipboard changes ...");
 
-    tracing::info!("Clipflow listening for clipboard changes ...");
+        ClipboardDaemon::new()?.monitor_clipboard_events()?;
+    }
 
-    ClipboardDaemon::new()?.monitor_clipboard_events()?;
+    tracing::info!("Clipflow disabled in config.toml, exiting ...");
 
     Ok(())
 }

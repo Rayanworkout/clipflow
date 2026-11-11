@@ -1,0 +1,6 @@
+[global]
+enabled = true
+
+[plugins]
+url = "open_url"
+email = "email_helper"

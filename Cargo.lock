@@ -80,6 +80,7 @@ dependencies = [
  "anyhow",
  "arboard",
  "serde",
+ "toml",
  "tracing",
  "tracing-subscriber",
  "url",
@@ -713,6 +714,15 @@ checksum = "b1e27c91459209c2986af3dcf603a5a74a4368754ce37414f59acc971167f643"
 dependencies = [
  "displaydoc",
  "zerovec",
+]
+
+[[package]]
+name = "toml"
+version = "0.5.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f4f7f0dd8d50a853a531c426359045b1998f04219d88799810762cd4ad314234"
+dependencies = [
+ "serde",
 ]
 
 [[package]]

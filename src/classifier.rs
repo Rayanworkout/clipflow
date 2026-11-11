@@ -1,9 +1,12 @@
+use serde;
 use url::Url;
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Deserialize, Hash)]
+#[serde(rename_all = "snake_case")]
 pub enum ClipboardEntryType {
-    URL,
-    UNKNOWN,
+    Url,
+    Unknown,
+    Email
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -21,7 +24,7 @@ pub fn classify_clipboard_entry(entry: &str) -> ClassifiedEntry {
             // We can select the protocol here
             "http" | "https" => {
                 return ClassifiedEntry {
-                    kind: ClipboardEntryType::URL,
+                    kind: ClipboardEntryType::Url,
                     content: trimmed.to_string(),
                 };
             }
@@ -30,7 +33,7 @@ pub fn classify_clipboard_entry(entry: &str) -> ClassifiedEntry {
     }
 
     ClassifiedEntry {
-        kind: ClipboardEntryType::UNKNOWN,
+        kind: ClipboardEntryType::Unknown,
         content: trimmed.to_string(),
     }
 }

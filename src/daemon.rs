@@ -4,7 +4,8 @@ use serde::{Deserialize, Serialize};
 use std::thread::sleep;
 use std::time::Duration;
 
-use crate::classifier::Classifier;
+use crate::classifier::classify_clipboard_entry;
+use crate::registry::Registry;
 
 const CLIPBOARD_REFRESH_RATE_MS: u64 = 800;
 
@@ -15,20 +16,18 @@ pub struct ClipboardEntry {
 
 pub struct ClipboardDaemon {
     clipboard: Clipboard,
-    classifier: Classifier,
+    registry: Registry,
 }
 
 impl ClipboardDaemon {
     pub fn new() -> Result<Self> {
         // Instanciate a clipboard object that will be used to access
         // or update the system clipboard.
-
         Ok(Self {
             clipboard: Clipboard::new()
                 .context("Could not create a clipboard_daemon instance")?
                 .into(),
-
-            classifier: Classifier {},
+            registry: Registry::new(),
         })
     }
 
@@ -42,9 +41,14 @@ impl ClipboardDaemon {
                 Ok(Some(entry)) => {
                     if entry != last_entry {
                         tracing::info!("New clipboard entry: {:?}", entry.text);
-                        // We pass the clipboard entry to the classifier
-                        self.classifier.infer_entry_type(entry.clone())?;
+                        // We pass the clipboard entry to the classifier function
+                        let classified = classify_clipboard_entry(&entry.clone().text);
 
+                        // And we call the registry to get
+                        let _actions = self.registry.actions_for(&classified)?;
+
+                        // Since the loop runs and detect even the last entry as new, we use a variable
+                        // to fire the alert only once
                         last_entry = entry;
                     }
                 }

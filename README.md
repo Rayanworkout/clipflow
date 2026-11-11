@@ -6,6 +6,7 @@ A lightweight Rust daemon that watches the system clipboard and proposes context
 
 - **Copy a URL** → "Open clean link", "Send to Telegram"
 - **Copy a YouTube URL** → "Download audio", "Open in mpv"
+- **Copy a time calculation** -> compute the hours numbers
 - **Copy an IP address** → "Ping it", "Check location"
 - **Copy a file path** → "Open in file manager", "Copy contents"
 - **Copy a port number** → "Check what's running"

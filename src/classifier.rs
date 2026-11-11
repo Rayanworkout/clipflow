@@ -1,17 +1,36 @@
-use anyhow::Result;
+use url::Url;
 
-use crate::daemon::ClipboardEntry;
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ClipboardEntryType {
+    URL,
+    UNKNOWN,
+}
 
-pub struct ClipboardEntryType {}
-pub struct Classifier {}
+#[derive(Debug, Clone, PartialEq, Eq)]
 
-impl Classifier {
-    pub fn _new() -> Result<Self> {
-        Ok(Self {})
+pub struct ClassifiedEntry {
+    pub kind: ClipboardEntryType,
+    pub content: String,
+}
+
+pub fn classify_clipboard_entry(entry: &str) -> ClassifiedEntry {
+    let trimmed = entry.trim();
+
+    if let Ok(parsed_url) = Url::parse(trimmed) {
+        match parsed_url.scheme() {
+            // We can select the protocol here
+            "http" | "https" => {
+                return ClassifiedEntry {
+                    kind: ClipboardEntryType::URL,
+                    content: trimmed.to_string(),
+                };
+            }
+            _ => {}
+        }
     }
 
-    pub fn infer_entry_type(&self, entry: ClipboardEntry) -> Result<ClipboardEntryType> {
-        println!("{:?}", entry);
-        Ok(ClipboardEntryType {})
+    ClassifiedEntry {
+        kind: ClipboardEntryType::UNKNOWN,
+        content: trimmed.to_string(),
     }
 }
